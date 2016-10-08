@@ -1,6 +1,6 @@
 import random
 
-#Constants
+#Constants, currently defunct for 5-bit GibberFish
 c_numpush = "0123456789abcdef"
 c_stackmanip = ":~$@{}rl[]"
 c_string = '"\''
@@ -17,11 +17,9 @@ c_mirrors = {
     "/" : lambda x,y:(-y,-x),
     "\\": lambda x,y:( y, x)
     }
-c_nummap = {
-    } #worthless until code page is at least partially done
-c_charmap = {i : j for j, i in c_nummap.items()} #same as above
 c_decodedict = {
-    } #another useless empty dict for now
+    } #Currently empty dictionary for decoding symbolic GibberFish into binary format for execution. Will be done when codepage is complete
+c_valuedict = {i : j, for j, i in c_decodedict.items()} #Reversed version of above dictionary for getting symbolic code representations from binaries
 
 
 #Functions
@@ -212,7 +210,7 @@ if __name__ == "__main__":
     filetype = parser.add_mutually_exclusive_group(required=True)
     filetype.add_argument("-e","--e", action="store_true")
     filetype.add_argument("-d","--d", action="store_true",
-                          help="specify whether file is encoded in UTF-8 (-d/--d) or Gibberfish code page (-e/--e)")
+                          help="specify whether file is encoded in GibberFish symbolic form (-d/--d) or binary form (-e/--e)")
     
 
     opts = parser.add_argument_group("options")
@@ -223,17 +221,16 @@ if __name__ == "__main__":
     arguments = parser.parse_args()
 
     if arguments.e:
-        filecode = arguments.script.read()
-        code = []
-        try:
-            for i in filecode:
-                code.append(c_decodedict[filecode[i]])
-            code = ''.join(code)
-        except KeyError:
-            print("The hex value {} is not in the Gibberfish code page!".format(ord(filecode[i].decode())))
+        codenum = int.from_bytes(arguments.script.read(), byteorder = 'big')
+        code = [codenum >> i & 31 for i in range(0, len(bin(codenum)) - 2, 5)]
         
     else:
-        code = arguments.script.read().decode()
+        filecode = arguments.script.read()
+        try:
+            code = []
+            for i in filecode:
+                code.append(decodedict[i])
+        except KeyError:
+            print('{} is not valid in symbolic GibberFish!'.format(i))
 
     #execution to go here
-    #branch test
