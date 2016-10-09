@@ -28,6 +28,7 @@ class progrun:
     
     def __init__(self, code):
         self.v_code = code
+		self.v_map = 0
         self.v_stack = []
         self.v_stackstack = [self.v_stack]
         self.v_registers = [None]
@@ -68,134 +69,23 @@ class progrun:
         l.append(l.pop(0))
 
     def f_exe(self, cmd):
-        if self.v_stringmode != None and self.v_stringmode != cmd:
-            self.f_push(c_nummap[cmd])
-        
-        elif cmd in c_string:
-            if self.v_stringmode == None:
-                self.v_stringmode = cmd
-            else:
-                self.v_stringmode = None
-        
-        elif cmd in c_numpush:
-            self.f_push(c_nummap[cmd])
-
-        elif cmd in c_directs:
-            self.v_direct = c_directs[cmd]
-
-        elif cmd in c_mirrors:
-            self.v_direct = c_mirrors[cmd](*self.v_direct)
-
-        elif cmd in c_miscmove:
-            if cmd is 'x':
-                self.v_direct = random.choice(list(c_directs.values()))
-
-            elif cmd is '!':
-                self.f_mov() #keep an eye on this
-
-            elif cmd is '?':
-                if self.v_stack.pop() == 0:
-                    self.f_mov #same thing as above
-
-            elif cmd is '.':
-                self.v_pos[1], self.v_pos[0] = self.v_stack.pop(), self.v_stack.pop()
-
-        elif cmd in c_arith:
-            temp1, temp2 = self.v_stack.pop(), self.v_stack.pop()
-            exec("self.f_push(temp2{}temp1)".format(cmd))
-
-        elif cmd is ',':
-            temp1, temp2 = self.v_stack.pop(), self.v_stack.pop()
-            self.f_push(temp2/temp1)
-
-        elif cmd in c_stackmanip:
-            if cmd is ':':
-                self.f_push(self.v_stack[-1])
-
-            elif cmd is '~':
-                self.v_stack.pop()
-
-            elif cmd is '$':
-                temp1, temp2 = self.v_stack.pop(), self.v_stack.pop()
-                self.f_push(temp1)
-                self.f_push(temp2)
-
-            elif cmd is '@':
-                temp1, temp2, temp3 = self.v_stack.pop(), self.v_stack.pop(), self.v_stack.pop()
-                self.f_push(temp1)
-                self.f_push(temp3)
-                self.f_push(temp2)
-
-            elif cmd is 'r':
-                self.v_stack.reverse()
-
-            elif cmd is 'l':
-                self.f_push(len(self.v_stack))
-
-            elif cmd is '}':
-                self.f_rshift(self.v_stack)
-
-            elif cmd is '{':
-                self.f_lshift(self.v_stack)
-
-            elif cmd is '[':
-                temp1 = int(self.v_stack.pop())
-                if temp1:
-                    self.v_stackstack[-1], newstack = self.v_stack[:-temp1], self.v_stack[-temp1:]
-                else:
-                    self.v_stackstack[-1], newstack = self.v_stack, []
-                self.v_stackstack.append(newstack)
-                self.v_stack = newstack
-                self.v_registers.append(None)
-
-            elif cmd is ']':
-                temp1 = self.v_stackstack.pop()
-                self.v_stack = self.v_stackstack[-1] + temp1
-                self.v_stackstack[-1] = self.v_stack
-                self.v_registers.pop()
-
-        elif cmd in c_comps:
-            if cmd is '=':
-                temp1, temp2 = self.v_stack.pop(), self.v_stack.pop()
-                if temp1 == temp2:
-                    self.f_push(1)
-                else:
-                    self.f_push(0)
-
-            elif cmd is '(':
-                temp1, temp2 = self.v_stack.pop(), self.v_stack.pop()
-                if temp2 < temp1:
-                    self.f_push(1)
-                else:
-                    self.f_push(0)
-
-            elif cmd is ')':
-                temp1, temp2 = self.v_stack.pop(), self.v_stack.pop()
-                if temp2 > temp1:
-                    self.f_push(1)
-                else:
-                    self.f_push(0)
-                
-
-        elif cmd in c_io:
-            pass #unfinished
-
-        elif cmd in c_misc:
-            if cmd is '&':
-                if self.v_registers[-1] is None:
-                    self.v_registers[-1] = self.v_stack.pop()
-                else:
-                    self.f_push(self.v_registers.pop())
-                    self.v_registers.append(None)
-
-            elif cmd is 'g':
-                pass #unfinished
-
-            elif cmd is 'p':
-                pass #unfinished
-
-        elif cmd is ' ':
-            pass
+        if cmd is 29:
+			self.v_map = 0
+			
+		elif cmd is 28:
+			self.v_map = 1
+		
+		elif cmd is 27:
+			self.v_map = 2
+			
+		elif map == 0:
+			pass #map 0 cmds here
+		
+		elif map == 1:
+			pass #map 1 cmds here
+			
+		elif map == 2:
+			pass #map 2 cmds here
 
         else:
             raise Exception("Invalid Instruction", cmd)
