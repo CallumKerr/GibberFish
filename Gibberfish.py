@@ -1,4 +1,12 @@
 import random
+try:
+	import pyshoco
+except:
+	print("Import of pyShoco failed! Program will be unable to replace placeholders if characters are compressed with Shoco"
+try:
+	from lib.smaz import compress, decompress
+except:
+	print("Import of pySMAZ failed! Program will be unable to replace placeholders if characters are compressed with SMAZ")
 
 #Constants, currently defunct for 5-bit GibberFish
 c_numpush = "0123456789abcdef"
