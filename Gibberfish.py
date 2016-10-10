@@ -108,7 +108,7 @@ if __name__ == "__main__":
     filetype = parser.add_mutually_exclusive_group(required=True)
     filetype.add_argument("-e","--e", action="store_true")
     filetype.add_argument("-d","--d", action="store_true",
-                          help="specify whether file is encoded in GibberFish symbolic form (-d/--d) or binary form (-e/--e)")
+                          help="specify whether file is encoded in GibberFish symbolic form (-d/--d) or 5-bit form (-e/--e)")
     
 
     opts = parser.add_argument_group("options")

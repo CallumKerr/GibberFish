@@ -4,12 +4,12 @@ Where x is the raw bit data of the command, y is the symbolic GibberFish represe
 
 Special:
 11111	\n	Newline command to make code 2D
-11110	%*	Placeholder symbol to be replaced from decompressed header textstream
+11110	%*	Placeholder symbol to be replaced from header textstream
 11101	0	Set map to 0
 11100	1	Set map to 1
 11011	2	Set map to 2
 
-*Symbolic representation not used as symbolic form will already have header textstream decompressed and placeholders replaced where necessary
+*Symbolic representation not used as symbolic form will already have header textstream decompressed if necessary and placeholders replaced where necessary
 
 Symbolic Representations:
 00000	a
